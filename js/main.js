@@ -1,4 +1,3 @@
-
 var cards = [
     {
       rank: 'queen',
@@ -22,18 +21,18 @@ var cards = [
     }
   ]
 
-var cardsInPlay = [];
+var cardsInPlay = []
 
+function flipCard() {
+    var cardId = this.getAttribute('data-id')
+    this.setAttribute('src', cards[cardId].cardImage)
+    var rank = cards[cardId].rank
+    
+    cardsInPlay.push(rank)
 
-checkForMatch()
-
-function flipCard(cardId) {
-
-    console.log(cards[cardId].rank + ' was flipped')
-    cardsInPlay.push(cardId).rank
-    console.log(cards[cardId].cardImage)
-    console.log(cards[cardId].suit)
-
+    if (cardsInPlay.length == 2) {
+        checkForMatch()
+    }  
 }
 
 function createBoard() {
@@ -41,16 +40,23 @@ function createBoard() {
         var cardElement = document.createElement('img')
         cardElement.setAttribute('src', 'images/back.png')
         cardElement.setAttribute('data-id', i)
-        document.addEventListener('click', flipCard(i))
+        cardElement.addEventListener('click', flipCard)
+        //Just spend an hour to realize that addEventL istener('click', flipCard()) doesn't need () on a function. Thanks Ryan!
         document.getElementById('game-board').appendChild(cardElement)
     }
 }
 function checkForMatch() {
-    if (cardsInPlay[0] === cardsInPlay[1]) {
-        console.log("You found a match!");
-    } else {
-        console.log("Sorry, try again.");
-    }
+        if (cardsInPlay[0] === cardsInPlay[1]) {
+            alert("You found a match!")
+            reloadPage()
+        } else {
+            alert('Sorry, try again.')
+            reloadPage()
+        }
+}
+
+function reloadPage () {
+  window.location.reload()
 }
 
 createBoard()
